@@ -1,0 +1,11 @@
+variable vpc_cidr_block{}
+variable public_subnet_1_cidr_block{}
+variable public_subnet_2_cidr_block{}
+variable app_subnet_1_cidr_block{}
+variable app_subnet_2_cidr_block{}
+variable database_subnet_1_cidr_block{}
+variable database_subnet_2_cidr_block{}
+variable env_prefix{}
+variable region_name{}
+variable az_1{}
+variable az_2{}
