@@ -28,6 +28,12 @@ module "word-press-database"{
     database_subnet_az1_id = module.word-press-network.database-subnet-1.id
     database_subnet_az2_id = module.word-press-network.database-subnet-2.id
     database_security_group_id = module.word-press-security-groups.rds-sg.id
+    az_1 = var.az_1
+    az_2 = var.az_2
+    rds_master_username = var.db_master_username
+    rds_master_password = var.db_master_password
+    env_prefix = var.env_prefix
+    rds_db_name = var.db_name
 }
 
 # To use output from a module, use the following syntax:

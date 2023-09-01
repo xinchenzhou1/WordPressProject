@@ -9,3 +9,6 @@ variable env_prefix{}
 variable region_name{}
 variable az_1{}
 variable az_2{}
+variable db_master_username{}
+variable db_master_password{}
+variable db_name{}

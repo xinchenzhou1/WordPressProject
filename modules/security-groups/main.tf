@@ -57,7 +57,7 @@ resource "aws_security_group" "efs_security_group" {
 }
 
 resource "aws_security_group" "web_security_group" {
-  name        = "rds-sg"
+  name        = "web-sg"
   description = "Allow HTTP Traffic from app instance"
   vpc_id      = var.word_press_vpc_id
 
