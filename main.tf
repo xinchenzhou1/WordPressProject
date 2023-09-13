@@ -36,5 +36,42 @@ module "word-press-database"{
     rds_db_name = var.db_name
 }
 
+module "word-press-elastic-file-system"{
+    source = "./modules/efs"
+    app_subnet_1_id = module.word-press-network.app-subnet-1.id
+    app_subnet_2_id = module.word-press-network.app-subnet-2.id
+    efs_sg_id = module.word-press-security-groups.efs-sg.id
+    env_prefix = var.env_prefix
+}
+
+module "word-press-application-load-balancer"{
+    source = "./modules/alb"
+    env_prefix = var.env_prefix
+    vpc_id = module.word-press-network.word-press-vpc.id
+    alb_sg_id = module.word-press-security-groups.app-sg.id
+    public_subnet_1_id = module.word-press-network.public-subnet-1.id
+    public_subnet_2_id = module.word-press-network.public-subnet-2.id
+}
+
+module "word-press-web-server"{
+    source = "./modules/web-server"
+    env_prefix = var.env_prefix
+    rds_db_name = module.word-press-database.database-cluster.database_name
+    rds_db_endpoint = module.word-press-database.database-cluster.endpoint
+    rds_db_username = module.word-press-database.database-cluster.master_username
+    rds_db_password = var.db_master_password
+    word_press_admin_username = var.wp_admin_username
+    word_press_admin_password = var.wp_admin_password
+    word_press_admin_email = var.wp_admin_email
+    alb_dns_name = module.word-press-application-load-balancer.word-press-alb.dns_name
+    alb_tg_arn = module.word-press-application-load-balancer.word-press-alb-tg.arn
+    efs_id = module.word-press-elastic-file-system.word-press-efs-file-system.id
+    region = var.region_name
+    web_sg_id = module.word-press-security-groups.web-sg.id
+    # az_1 = var.az_1
+    # az_2 = var.az_2
+    app_subnet_1_id = module.word-press-network.app-subnet-1.id
+    app_subnet_2_id = module.word-press-network.app-subnet-2.id
+}
 # To use output from a module, use the following syntax:
 # module.modulename.outputname.attribute

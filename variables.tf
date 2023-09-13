@@ -12,3 +12,6 @@ variable az_2{}
 variable db_master_username{}
 variable db_master_password{}
 variable db_name{}
+variable wp_admin_username{}
+variable wp_admin_password{}
+variable wp_admin_email{}
