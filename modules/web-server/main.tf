@@ -14,9 +14,9 @@ data "aws_ami" "latest_linux2_ami"{
 
 # Launch template contains launch configurations for the web application VM
 resource "aws_launch_template" "wp-launch-template" {
-  name = "wp-launch-template"
+  name = "wp-web-server-launch-template"
   image_id = data.aws_ami.latest_linux2_ami.id
-  instance_type = "t3.medium"
+  instance_type = var.web_server_ec2_instance_type
   vpc_security_group_ids = [var.web_sg_id]
   # user_data = filebase64("userdata.sh")
   user_data = base64encode(templatefile("${path.module}/userdata.sh", {
@@ -33,6 +33,7 @@ resource "aws_launch_template" "wp-launch-template" {
     } ))
 }
 
+# ASG creation, minimum to have 2 servers in two Subnets, maximum to have 4 servers
 resource "aws_autoscaling_group" "wp-asg" {
     vpc_zone_identifier = [var.app_subnet_1_id, var.app_subnet_2_id]
     desired_capacity   = 2
@@ -46,6 +47,8 @@ resource "aws_autoscaling_group" "wp-asg" {
         version = "$Latest"
         }
 }
+
+# ASG policy to launch additional servers if average CPU utilization is above 50%
 resource "aws_autoscaling_policy" "wp-asg-policy" {
   name                   = "word-press-asg-policy"
   policy_type = "TargetTrackingScaling"

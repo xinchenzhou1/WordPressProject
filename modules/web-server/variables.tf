@@ -13,4 +13,5 @@ variable region{}
 variable web_sg_id{}
 variable app_subnet_1_id {}
 variable app_subnet_2_id {}
+variable web_server_ec2_instance_type{}
 

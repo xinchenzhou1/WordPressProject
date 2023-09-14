@@ -69,24 +69,29 @@ variable db_master_username{
     type = string
     description = "RDS database master username, must contain only alphanumeric characters (minimum 8; maximum 16)"
     default = ""
+    sensitive = true
 }
 variable db_master_password{
     type = string
     description = "RDS database master password (minimum 6)"
-    default = ""    
+    default = ""
+    sensitive = true
 }
 variable wp_admin_username{
     type = string
     description = "word press admin username"
-    default = ""  
+    default = ""
+    sensitive = true
 }
 variable wp_admin_password{
     type = string
     description = "word press admin password"
-    default = "" 
+    default = ""
+    sensitive = true
 }
 variable wp_admin_email{
     type = string
     description = "word press admin email"
     default = "" 
+    sensitive = true
 }
