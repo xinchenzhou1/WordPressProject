@@ -10,6 +10,8 @@ resource "aws_efs_file_system" "word-press-efs-system" {
     transition_to_ia = "AFTER_30_DAYS"
   }
 }
+
+# Configure application subnet 1 and 2 to efs mount target 
 resource "aws_efs_mount_target" "word-press-mount-target-az1" {
   file_system_id = aws_efs_file_system.word-press-efs-system.id
   subnet_id      = var.app_subnet_1_id

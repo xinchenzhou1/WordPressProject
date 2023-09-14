@@ -16,10 +16,6 @@ resource "aws_internet_gateway" "word-press-IGW" {
   }
 }
 
-# resource "aws_internet_gateway_attachment" "attach-IGW" {
-#   internet_gateway_id = aws_internet_gateway.word-press-IGW.id
-#   vpc_id              = aws_vpc.word-press-vpc.id
-# }
 
 #Create public subnet 1 in AZ1
 resource "aws_subnet" "public-subnet-1"{

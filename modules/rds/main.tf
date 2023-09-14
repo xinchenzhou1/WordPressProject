@@ -23,9 +23,12 @@ resource "aws_rds_cluster" "word-press-db-cluster"{
     storage_encrypted = false
     deletion_protection = false
     skip_final_snapshot = true
+    tags = {
+        Name = "${var.env_prefix}-rds-db-cluster"
+    }
 }
 
-resource "aws_rds_cluster_instance" "word-press-db-instance"{
+resource "aws_rds_cluster_instance" "word-press-db-instance1"{
     identifier = "word-press-db-instance1"
     cluster_identifier = aws_rds_cluster.word-press-db-cluster.id
     instance_class = "db.t3.small"
@@ -37,8 +40,9 @@ resource "aws_rds_cluster_instance" "word-press-db-instance"{
     monitoring_interval = "0"
     publicly_accessible = false
     auto_minor_version_upgrade = false
-
-
+    tags = {
+        Name = "${var.env_prefix}-rds-db-instance-1"
+    }
 }
 resource "aws_rds_cluster_instance" "word-press-db-instance2"{
     identifier = "word-press-db-instance2"
@@ -52,6 +56,7 @@ resource "aws_rds_cluster_instance" "word-press-db-instance2"{
     monitoring_interval = "0"
     publicly_accessible = false
     auto_minor_version_upgrade = false
-
-
+    tags = {
+        Name = "${var.env_prefix}-rds-db-instance-2"
+    }
 }

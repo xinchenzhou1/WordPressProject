@@ -11,8 +11,6 @@ variable alb_tg_arn{}
 variable efs_id{}
 variable region{}
 variable web_sg_id{}
-# variable az_1{}
-# variable az_2{}
 variable app_subnet_1_id {}
 variable app_subnet_2_id {}
 

@@ -1,3 +1,4 @@
+# aws ami filter to retrieve the latest amazon linux 2 image
 data "aws_ami" "latest_linux2_ami"{
     most_recent = true
     owners = ["amazon"]
@@ -10,18 +11,8 @@ data "aws_ami" "latest_linux2_ami"{
     values = ["hvm"]
     }
 }
-locals {
-  DB_NAME=var.rds_db_name
-  DB_HOSTNAME=var.rds_db_endpoint
-  DB_USERNAME=var.rds_db_username
-  DB_PASSWORD=var.rds_db_password
-  WP_ADMIN=var.word_press_admin_username
-  WP_PASSWORD=var.word_press_admin_password
-  WP_EMAIL=var.word_press_admin_email
-  LB_HOSTNAME=var.alb_dns_name
-  EFS_ID=var.efs_id
-  REGION_NAME=var.region
-}
+
+# Launch template contains launch configurations for the web application VM
 resource "aws_launch_template" "wp-launch-template" {
   name = "wp-launch-template"
   image_id = data.aws_ami.latest_linux2_ami.id
@@ -29,16 +20,16 @@ resource "aws_launch_template" "wp-launch-template" {
   vpc_security_group_ids = [var.web_sg_id]
   # user_data = filebase64("userdata.sh")
   user_data = base64encode(templatefile("${path.module}/userdata.sh", {
-    DB_NAME=local.DB_NAME
-    DB_HOSTNAME=local.DB_HOSTNAME
-    DB_USERNAME=local.DB_USERNAME
-    DB_PASSWORD=local.DB_PASSWORD
-    WP_ADMIN=local.WP_ADMIN
-    WP_PASSWORD=local.WP_PASSWORD
-    WP_EMAIL=local.WP_EMAIL
-    LB_HOSTNAME=local.LB_HOSTNAME
-    EFS_ID=local.EFS_ID
-    REGION_NAME=local.REGION_NAME
+    DB_NAME=var.rds_db_name
+    DB_HOSTNAME=var.rds_db_endpoint
+    DB_USERNAME=var.rds_db_username
+    DB_PASSWORD=var.rds_db_password
+    WP_ADMIN=var.word_press_admin_username
+    WP_PASSWORD=var.word_press_admin_password
+    WP_EMAIL=var.word_press_admin_email
+    LB_HOSTNAME=var.alb_dns_name
+    EFS_ID=var.efs_id
+    REGION_NAME=var.region
     } ))
 }
 

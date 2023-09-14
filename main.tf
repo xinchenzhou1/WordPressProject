@@ -2,6 +2,7 @@ provider "aws" {
     region = var.region_name
 }
 
+# Network module, includes VPC, subnets, nat gateways, route tables, IGW configurations
 module "word-press-network" {
     source = "./modules/network"
     vpc_cidr_block = var.vpc_cidr_block
@@ -15,13 +16,13 @@ module "word-press-network" {
     az_2 = var.az_2
     env_prefix = var.env_prefix
 }
-
+# Security group module, includes application, web, efs, rds security groups
 module "word-press-security-groups"{
     source = "./modules/security-groups"
     word_press_vpc_id = module.word-press-network.word-press-vpc.id
     env_prefix = var.env_prefix
 }
-
+# Database module, includes creation for rds cluster, instances, and rds subnet groups
 module "word-press-database"{
     source = "./modules/rds"
     word_press_vpc_id = module.word-press-network.word-press-vpc.id
@@ -35,7 +36,7 @@ module "word-press-database"{
     env_prefix = var.env_prefix
     rds_db_name = var.db_name
 }
-
+# Elastic file system module
 module "word-press-elastic-file-system"{
     source = "./modules/efs"
     app_subnet_1_id = module.word-press-network.app-subnet-1.id
@@ -43,7 +44,7 @@ module "word-press-elastic-file-system"{
     efs_sg_id = module.word-press-security-groups.efs-sg.id
     env_prefix = var.env_prefix
 }
-
+# Application load balancer, target group and listener module
 module "word-press-application-load-balancer"{
     source = "./modules/alb"
     env_prefix = var.env_prefix
@@ -52,7 +53,7 @@ module "word-press-application-load-balancer"{
     public_subnet_1_id = module.word-press-network.public-subnet-1.id
     public_subnet_2_id = module.word-press-network.public-subnet-2.id
 }
-
+# Auto scaling group and launch template module
 module "word-press-web-server"{
     source = "./modules/web-server"
     env_prefix = var.env_prefix
@@ -68,10 +69,7 @@ module "word-press-web-server"{
     efs_id = module.word-press-elastic-file-system.word-press-efs-file-system.id
     region = var.region_name
     web_sg_id = module.word-press-security-groups.web-sg.id
-    # az_1 = var.az_1
-    # az_2 = var.az_2
+
     app_subnet_1_id = module.word-press-network.app-subnet-1.id
     app_subnet_2_id = module.word-press-network.app-subnet-2.id
 }
-# To use output from a module, use the following syntax:
-# module.modulename.outputname.attribute
