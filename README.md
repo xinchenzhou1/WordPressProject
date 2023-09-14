@@ -10,6 +10,10 @@ The project contains terraform scripts to
   ![ASG wordpress architecture rds](https://github.com/xinchenzhou1/WordPressProject/assets/113848420/c5868bed-9d81-40fb-b15d-7b93a77a423c)
 
 Final Architecture:
+![final draft wordpress architecture rds](https://github.com/xinchenzhou1/WordPressProject/assets/113848420/57a07d49-358b-4c9e-b82a-651a2135c76d)
+
+To run the script:
+1. Install Terraform
 
 
    
